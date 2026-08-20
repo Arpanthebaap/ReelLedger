@@ -14,6 +14,7 @@ or the current docs at https://google.github.io/adk-docs/ and adjust the
 import path below if it's changed since this was written.
 """
 import os
+import sys
 
 from google.adk.agents import LlmAgent
 from google.adk.tools.mcp_tool.mcp_toolset import McpToolset, StdioServerParameters
@@ -25,12 +26,12 @@ MODEL = os.getenv("REELLEDGER_MODEL", "gemini-2.5-flash")
 
 def _clickhouse_mcp_toolset() -> McpToolset:
     """Spawns the ClickHouse MCP server as a subprocess and exposes its
-    tools (run_select_query, list_databases, list_tables, etc.) to the agent.
+    tools (run_query, list_databases, list_tables, etc.) to the agent.
     """
     return McpToolset(
         connection_params=StdioServerParameters(
-            command="uvx",
-            args=["mcp-clickhouse"],
+            command=sys.executable,
+            args=["-c", "from mcp_clickhouse.main import main; main()"],
             env={
                 "CLICKHOUSE_HOST": os.environ["CLICKHOUSE_HOST"],
                 "CLICKHOUSE_PORT": os.environ.get("CLICKHOUSE_PORT", "8443"),
@@ -42,7 +43,7 @@ def _clickhouse_mcp_toolset() -> McpToolset:
         ),
         # Restrict to read-only analytical tools -- this agent should never
         # be able to mutate production financial data.
-        tool_filter=["run_select_query", "list_tables", "list_databases"],
+        tool_filter=["run_query", "list_tables", "list_databases"],
     )
 
 

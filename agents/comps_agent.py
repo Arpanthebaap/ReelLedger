@@ -9,6 +9,7 @@ that separation is also what makes this a genuine multi-agent system rather
 than one agent with two prompts glued together.
 """
 import os
+import sys
 
 from google.adk.agents import LlmAgent
 from google.adk.tools.mcp_tool.mcp_toolset import McpToolset, StdioServerParameters
@@ -21,8 +22,8 @@ MODEL = os.getenv("REELLEDGER_MODEL", "gemini-2.5-flash")
 def _clickhouse_mcp_toolset() -> McpToolset:
     return McpToolset(
         connection_params=StdioServerParameters(
-            command="uvx",
-            args=["mcp-clickhouse"],
+            command=sys.executable,
+            args=["-c", "from mcp_clickhouse.main import main; main()"],
             env={
                 "CLICKHOUSE_HOST": os.environ["CLICKHOUSE_HOST"],
                 "CLICKHOUSE_PORT": os.environ.get("CLICKHOUSE_PORT", "8443"),
@@ -32,7 +33,7 @@ def _clickhouse_mcp_toolset() -> McpToolset:
                 "CLICKHOUSE_DATABASE": os.environ.get("CLICKHOUSE_DATABASE", "reelledger"),
             },
         ),
-        tool_filter=["run_select_query", "list_tables", "list_databases"],
+        tool_filter=["run_query", "list_tables", "list_databases"],
     )
 
 
