@@ -17,7 +17,7 @@ import os
 import sys
 
 from google.adk.agents import LlmAgent
-from google.adk.tools.mcp_tool.mcp_toolset import McpToolset, StdioServerParameters
+from google.adk.tools.mcp_tool.mcp_toolset import McpToolset, StdioConnectionParams, StdioServerParameters
 
 from agents.prompts import EXPOSURE_AGENT_INSTRUCTION
 
@@ -29,17 +29,20 @@ def _clickhouse_mcp_toolset() -> McpToolset:
     tools (run_query, list_databases, list_tables, etc.) to the agent.
     """
     return McpToolset(
-        connection_params=StdioServerParameters(
-            command=sys.executable,
-            args=["-c", "from mcp_clickhouse.main import main; main()"],
-            env={
-                "CLICKHOUSE_HOST": os.environ["CLICKHOUSE_HOST"],
-                "CLICKHOUSE_PORT": os.environ.get("CLICKHOUSE_PORT", "8443"),
-                "CLICKHOUSE_USER": os.environ.get("CLICKHOUSE_USER", "default"),
-                "CLICKHOUSE_PASSWORD": os.environ.get("CLICKHOUSE_PASSWORD", ""),
-                "CLICKHOUSE_SECURE": os.environ.get("CLICKHOUSE_SECURE", "true"),
-                "CLICKHOUSE_DATABASE": os.environ.get("CLICKHOUSE_DATABASE", "reelledger"),
-            },
+        connection_params=StdioConnectionParams(
+            server_params=StdioServerParameters(
+                command=sys.executable,
+                args=["-c", "from mcp_clickhouse.main import main; main()"],
+                env={
+                    "CLICKHOUSE_HOST": os.environ["CLICKHOUSE_HOST"],
+                    "CLICKHOUSE_PORT": os.environ.get("CLICKHOUSE_PORT", "8443"),
+                    "CLICKHOUSE_USER": os.environ.get("CLICKHOUSE_USER", "default"),
+                    "CLICKHOUSE_PASSWORD": os.environ.get("CLICKHOUSE_PASSWORD", ""),
+                    "CLICKHOUSE_SECURE": os.environ.get("CLICKHOUSE_SECURE", "true"),
+                    "CLICKHOUSE_DATABASE": os.environ.get("CLICKHOUSE_DATABASE", "reelledger"),
+                },
+            ),
+            timeout=30.0,
         ),
         # Restrict to read-only analytical tools -- this agent should never
         # be able to mutate production financial data.
