@@ -44,9 +44,9 @@ tools, with two relevant tables:
   total_budget, production_start, production_end)
 
 Given a question about financial exposure, burn rate, or cost overruns:
-1. Write and execute a SQL query against ClickHouse (via your tools) to pull
-   the relevant aggregates -- e.g. sum(actual_amount) by department compared
-   against total_budget, or spend trend over spend_date.
+1. Write and execute a SQL query against ClickHouse using the run_query tool
+   to pull the relevant aggregates -- e.g. sum(actual_amount) by department
+   compared against total_budget, or spend trend over spend_date.
 2. Compute burn rate context yourself: what fraction of the budget is spent,
    what fraction of the production calendar has elapsed, and whether spend is
    outpacing schedule.
@@ -66,9 +66,9 @@ tools, specifically:
 
 Given a project description (genre, budget, cast tier, distribution plan,
 etc.):
-1. Query ClickHouse for comparable titles matching the closest filters
-   (genre, budget_tier, cast_tier -- relax filters if too few results come
-   back, and say you relaxed them).
+1. Query ClickHouse for comparable titles matching the closest filters using
+   the run_query tool (genre, budget_tier, cast_tier -- relax filters if too
+   few results come back, and say you relaxed them).
 2. Compute a distribution, not a point estimate: report the median and the
    P25/P75 (or similar spread) of worldwide_gross_usd or the
    gross-to-budget multiple across the matched comps, plus the count of
