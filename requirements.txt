@@ -1,0 +1,21 @@
+# --- Google Cloud AI (the only AI stack this contest permits) ---
+google-adk>=0.1.0
+google-genai>=0.3.0
+google-cloud-aiplatform>=1.70.0
+
+# --- ClickHouse ---
+clickhouse-connect>=0.7.19
+mcp-clickhouse>=0.1.0
+
+# --- MCP client (ADK uses this under the hood for MCPToolset) ---
+mcp>=1.0.0
+
+# --- Backend ---
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.8.0
+python-dotenv>=1.0.1
+
+# --- Data seeding ---
+faker>=26.0.0
+numpy>=1.26.0

@@ -1,0 +1,24 @@
+# Environment variables and secrets
+.env
+.env.*
+
+# Python cache and environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# IDE files
+.vscode/
+.idea/
+
+# Submission Checklist (not needed in public repo)
+SUBMISSION_CHECKLIST.md
+
+# OS files
+.DS_Store
+Thumbs.db
