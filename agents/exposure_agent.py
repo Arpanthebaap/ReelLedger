@@ -16,18 +16,18 @@ import path below if it's changed since this was written.
 import os
 
 from google.adk.agents import LlmAgent
-from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StdioServerParameters
+from google.adk.tools.mcp_tool.mcp_toolset import McpToolset, StdioServerParameters
 
 from agents.prompts import EXPOSURE_AGENT_INSTRUCTION
 
 MODEL = os.getenv("REELLEDGER_MODEL", "gemini-2.5-flash")
 
 
-def _clickhouse_mcp_toolset() -> MCPToolset:
+def _clickhouse_mcp_toolset() -> McpToolset:
     """Spawns the ClickHouse MCP server as a subprocess and exposes its
     tools (run_select_query, list_databases, list_tables, etc.) to the agent.
     """
-    return MCPToolset(
+    return McpToolset(
         connection_params=StdioServerParameters(
             command="uvx",
             args=["mcp-clickhouse"],

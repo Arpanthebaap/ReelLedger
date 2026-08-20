@@ -11,15 +11,15 @@ than one agent with two prompts glued together.
 import os
 
 from google.adk.agents import LlmAgent
-from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StdioServerParameters
+from google.adk.tools.mcp_tool.mcp_toolset import McpToolset, StdioServerParameters
 
 from agents.prompts import COMPS_AGENT_INSTRUCTION
 
 MODEL = os.getenv("REELLEDGER_MODEL", "gemini-2.5-flash")
 
 
-def _clickhouse_mcp_toolset() -> MCPToolset:
-    return MCPToolset(
+def _clickhouse_mcp_toolset() -> McpToolset:
+    return McpToolset(
         connection_params=StdioServerParameters(
             command="uvx",
             args=["mcp-clickhouse"],
