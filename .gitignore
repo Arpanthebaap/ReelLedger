@@ -16,9 +16,6 @@ env/
 .vscode/
 .idea/
 
-# Submission Checklist (not needed in public repo)
-SUBMISSION_CHECKLIST.md
-
 # OS files
 .DS_Store
 Thumbs.db
